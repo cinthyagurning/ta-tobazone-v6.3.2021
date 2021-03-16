@@ -40,20 +40,18 @@ class TransactionControllerTest extends TestCase
      */
     public function testUpdateStatusMutant1($testData, $expectedResult)
     {
+        // define mock data
         // mock customer and merchant
         $mockCustomer = factory(User::class)->create($testData['customer']);
         $mockMerchant = factory(User::class)->create($testData['merchant']);
-
         // mock transaction
         $testData['transaction']['customer_id'] = $mockCustomer->id;
         $testData['transaction']['merchant_id'] = $mockMerchant->id;
         $mockTransaction = factory(Transaction::class)->create($testData['transaction']);
-
         // mock product
         $testData['product']['user_id'] = $mockMerchant->id;
         $mockProduct = factory(Product::class)->create($testData['product']);
-
-        // store a new order in database
+        // mock order
         $testData['order']['product_id'] = $mockProduct->id;
         $testData['order']['transaction_id'] = $mockTransaction->id;
         factory(Order::class)->create($testData['order']);
@@ -63,6 +61,7 @@ class TransactionControllerTest extends TestCase
         $paramRequest = new Request();
         $paramRequest->replace($testData['request']);
 
+        // call function and assert value
         $actualResult = (new TransactionController())->updateStatusMutant1($paramRequest, $paramTransactionId);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -73,20 +72,18 @@ class TransactionControllerTest extends TestCase
      */
     public function testUpdateStatusMutant2($testData, $expectedResult)
     {
+        // define mock data
         // mock customer and merchant
         $mockCustomer = factory(User::class)->create($testData['customer']);
         $mockMerchant = factory(User::class)->create($testData['merchant']);
-
         // mock transaction
         $testData['transaction']['customer_id'] = $mockCustomer->id;
         $testData['transaction']['merchant_id'] = $mockMerchant->id;
         $mockTransaction = factory(Transaction::class)->create($testData['transaction']);
-
         // mock product
         $testData['product']['user_id'] = $mockMerchant->id;
         $mockProduct = factory(Product::class)->create($testData['product']);
-
-        // store a new order in database
+        // mock order
         $testData['order']['product_id'] = $mockProduct->id;
         $testData['order']['transaction_id'] = $mockTransaction->id;
         factory(Order::class)->create($testData['order']);
@@ -96,6 +93,7 @@ class TransactionControllerTest extends TestCase
         $paramRequest = new Request();
         $paramRequest->replace($testData['request']);
 
+        // call function and assert value
         $actualResult = (new TransactionController())->updateStatusMutant2($paramRequest, $paramTransactionId);
         $this->assertEquals($expectedResult, $actualResult);
     }
