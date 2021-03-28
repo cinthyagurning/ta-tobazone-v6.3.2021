@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Renewed;
+namespace Tests\Feature\Http\Controllers\Mutant;
 
-use App\Http\Controllers\Renewed\ProductController;
+use App\Http\Controllers\Mutant\ProductController;
 use App\Product;
 use App\User;
 use Tests\TestCase;
@@ -36,7 +36,7 @@ class ProductControllerTest extends TestCase
      * @test
      * @dataProvider getTestCasesStore
      */
-    public function testStore($testData, $expectedResult)
+    public function testStoreMutant1($testData, $expectedResult)
     {
         if ($testData['merchant'] != null) {
             // define mock data
@@ -52,8 +52,10 @@ class ProductControllerTest extends TestCase
         $paramId = $testData['request']['id_product_type'];
 
         // call function
-        $storedProduct = (new ProductController())->store($paramRequest, $paramId);
+        $storedProduct = (new ProductController())->storeMutant1($paramRequest, $paramId);
         if (!$expectedResult['is_error']) {
+            $this->assertNotEmpty($storedProduct);
+
             // define expected result
             $expectedProduct = new Product($expectedResult['product']);
             $expectedProduct->user_id = $mockMerchant->id;

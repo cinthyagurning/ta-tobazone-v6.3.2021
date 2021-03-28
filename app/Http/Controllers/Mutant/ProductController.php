@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Renewed;
+namespace App\Http\Controllers\Mutant;
 
 use App\Http\Controllers\Controller;
 use App\Product;
@@ -32,13 +32,17 @@ class ProductController extends Controller
         return Validator::make($request->all(), $rules, $messages);
     }
 
-    public function store(Request $request, $id)
+    public function storeMutant1(Request $request, $id)
     {
         // validate input request
         $validator = $this->createProductValidator($request);
-        if ($validator->fails()) {
-            // $error = $validator->errors();
+        // mutant 1: add !
+        // $validator->fails() returns false, then data are valid
+        // but $validator->fails() returns true, then data are not valid
+        if (!$validator->fails()) {
+            // this block code will executed only if condition is `true`
 
+            // $error = $validator->errors();
             // return $error;
             return null;
         }
