@@ -62,8 +62,8 @@ class TransactionControllerTest extends TestCase
         $paramRequest->replace($testData['request']);
 
         // call function and assert value
-        $actualResult = (new TransactionController())->updateStatusMutant1($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $actualResult);
+        $updateCount = (new TransactionController())->updateStatusMutant1($paramRequest, $paramTransactionId);
+        $this->assertEquals($expectedResult, $updateCount);
     }
 
     /**
@@ -94,7 +94,7 @@ class TransactionControllerTest extends TestCase
         $paramRequest->replace($testData['request']);
 
         // call function and assert value
-        $actualResult = (new TransactionController())->updateStatusMutant2($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $actualResult);
+        $updateCount = (new TransactionController())->updateStatusMutant2($paramRequest, $paramTransactionId);
+        $this->assertEquals($expectedResult, $updateCount);
     }
 }

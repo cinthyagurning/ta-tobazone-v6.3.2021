@@ -68,7 +68,7 @@ class TransactionControllerTest extends TestCase
         $paramRequest->replace($testData['request']);
 
         // call function and assert value
-        $actualResult = (new TransactionController())->updateStatus($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $actualResult);
+        $updateCount = (new TransactionController())->updateStatus($paramRequest, $paramTransactionId);
+        $this->assertEquals($expectedResult, $updateCount);
     }
 }
