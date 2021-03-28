@@ -17,195 +17,84 @@ class TransactionControllerTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
-    protected $mockMerchant;
-    protected $mockCustomer;
-
-    public function setUp()
+    public function getTestCasesUpdateStatus()
     {
-        parent::setUp();
+        $path = __DIR__ . "/../TestCases/transactionController_updateStatus.json";
+        $testCasesJSON = file_get_contents($path);
+        $decodedTestCases = json_decode($testCasesJSON, true);
 
-        // store and initialize users mock
-        $this->mockMerchant = factory(User::class)->create(['username' => 'merchant']);
-        $this->mockCustomer = factory(User::class)->create(['username' => 'customer']);
+        $testCases = [];
+        foreach ($decodedTestCases as $dtc) {
+            $testName = $dtc['test_name'];
+            $testData = $dtc['test_data'];
+            $expectedResult = $dtc['test_expected_result'];
+            $testCases[$testName] = [$testData, $expectedResult];
+        }
+
+        return $testCases;
     }
 
-    public function test_updateStatusMuntant1_successTerima()
+    /**
+     * @test
+     * @dataProvider getTestCasesUpdateStatus
+     */
+    public function testUpdateStatusMutant1($testData, $expectedResult)
     {
         // define mock data
-        $mockTransaction = factory(Transaction::class)->create([
-            'customer_id' => $this->mockCustomer->id,
-            'merchant_id' => $this->mockMerchant->id,
-            'status' => 'pending',
-        ]);
-        $mockProduct = factory(Product::class)->create([
-            'user_id' => $this->mockMerchant->id,
-            'name' => 'Tas Pakkat',
-            'price' => '50000',
-            'images' => 'image.jpeg',
-            'category' => 'buatan tangan',
-            'stock' => 2,
-            'sold' => 0,
-            'description' => 'Bahan dasar dari rotan dan bambu',
-            'specification' => '{"size":"Sedang","weight":"1"}',
-            'color' => 'Hitam',
-            'cat_product' => 'aksesoris',
-            'asal' => 'Toba Samosir',
-        ]);
-
-        // store a new order in database
-        factory(Order::class)->create([
-            'product_id' => $mockProduct->id,
-            'transaction_id' => $mockTransaction->id,
-            'quantity' => 1,
-        ]);
+        // mock customer and merchant
+        $mockCustomer = factory(User::class)->create($testData['customer']);
+        $mockMerchant = factory(User::class)->create($testData['merchant']);
+        // mock transaction
+        $testData['transaction']['customer_id'] = $mockCustomer->id;
+        $testData['transaction']['merchant_id'] = $mockMerchant->id;
+        $mockTransaction = factory(Transaction::class)->create($testData['transaction']);
+        // mock product
+        $testData['product']['user_id'] = $mockMerchant->id;
+        $mockProduct = factory(Product::class)->create($testData['product']);
+        // mock order
+        $testData['order']['product_id'] = $mockProduct->id;
+        $testData['order']['transaction_id'] = $mockTransaction->id;
+        factory(Order::class)->create($testData['order']);
 
         // define parameters
         $paramTransactionId = $mockTransaction->id;
         $paramRequest = new Request();
-        $paramRequest->replace(['status' => 'acceptedByAdmin']);
+        $paramRequest->replace($testData['request']);
 
-        // define expected result
-        $expectedResult = array(
-            'updated_transaction' => 1,
-            'updated_product' => 1,
-        );
-
-        $result = (new TransactionController())->updateStatusMutant1($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $result);
+        // call function and assert value
+        $updateCount = (new TransactionController())->updateStatusMutant1($paramRequest, $paramTransactionId);
+        $this->assertEquals($expectedResult, $updateCount);
     }
 
-    public function test_updateStatusMuntant1_successTolak()
+    /**
+     * @test
+     * @dataProvider getTestCasesUpdateStatus
+     */
+    public function testUpdateStatusMutant2($testData, $expectedResult)
     {
         // define mock data
-        $mockTransaction = factory(Transaction::class)->create([
-            'customer_id' => $this->mockCustomer->id,
-            'merchant_id' => $this->mockMerchant->id,
-            'status' => 'pending',
-        ]);
-        $mockProduct = factory(Product::class)->create([
-            'user_id' => $this->mockMerchant->id,
-            'name' => 'Tas Pakkat',
-            'price' => '50000',
-            'images' => 'image.jpeg',
-            'category' => 'buatan tangan',
-            'stock' => 2,
-            'sold' => 0,
-            'description' => 'Bahan dasar dari rotan dan bambu',
-            'specification' => '{"size":"Sedang","weight":"1"}',
-            'color' => 'Hitam',
-            'cat_product' => 'aksesoris',
-            'asal' => 'Toba Samosir',
-        ]);
-
-        // store a new order in database
-        factory(Order::class)->create([
-            'product_id' => $mockProduct->id,
-            'transaction_id' => $mockTransaction->id,
-            'quantity' => 1,
-        ]);
+        // mock customer and merchant
+        $mockCustomer = factory(User::class)->create($testData['customer']);
+        $mockMerchant = factory(User::class)->create($testData['merchant']);
+        // mock transaction
+        $testData['transaction']['customer_id'] = $mockCustomer->id;
+        $testData['transaction']['merchant_id'] = $mockMerchant->id;
+        $mockTransaction = factory(Transaction::class)->create($testData['transaction']);
+        // mock product
+        $testData['product']['user_id'] = $mockMerchant->id;
+        $mockProduct = factory(Product::class)->create($testData['product']);
+        // mock order
+        $testData['order']['product_id'] = $mockProduct->id;
+        $testData['order']['transaction_id'] = $mockTransaction->id;
+        factory(Order::class)->create($testData['order']);
 
         // define parameters
         $paramTransactionId = $mockTransaction->id;
         $paramRequest = new Request();
-        $paramRequest->replace(['status' => 'rejectedByAdmin']);
+        $paramRequest->replace($testData['request']);
 
-        // define expected result
-        $expectedResult = array(
-            'updated_transaction' => 1,
-            'updated_product' => 0,
-        );
-
-        $result = (new TransactionController())->updateStatusMutant1($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    public function test_updateStatusMuntant2_successTerima()
-    {
-        // define mock data
-        $mockTransaction = factory(Transaction::class)->create([
-            'customer_id' => $this->mockCustomer->id,
-            'merchant_id' => $this->mockMerchant->id,
-            'status' => 'pending',
-        ]);
-        $mockProduct = factory(Product::class)->create([
-            'user_id' => $this->mockMerchant->id,
-            'name' => 'Tas Pakkat',
-            'price' => '50000',
-            'images' => 'image.jpeg',
-            'category' => 'buatan tangan',
-            'stock' => 2,
-            'sold' => 0,
-            'description' => 'Bahan dasar dari rotan dan bambu',
-            'specification' => '{"size":"Sedang","weight":"1"}',
-            'color' => 'Hitam',
-            'cat_product' => 'aksesoris',
-            'asal' => 'Toba Samosir',
-        ]);
-
-        // store a new order in database
-        factory(Order::class)->create([
-            'product_id' => $mockProduct->id,
-            'transaction_id' => $mockTransaction->id,
-            'quantity' => 1,
-        ]);
-
-        // define parameters
-        $paramTransactionId = $mockTransaction->id;
-        $paramRequest = new Request();
-        $paramRequest->replace(['status' => 'acceptedByAdmin']);
-
-        // define expected result
-        $expectedResult = array(
-            'updated_transaction' => 1,
-            'updated_product' => 1,
-        );
-
-        $result = (new TransactionController())->updateStatusMutant2($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    public function test_updateStatusMuntant2_successTolak()
-    {
-        // define mock data
-        $mockTransaction = factory(Transaction::class)->create([
-            'customer_id' => $this->mockCustomer->id,
-            'merchant_id' => $this->mockMerchant->id,
-            'status' => 'pending',
-        ]);
-        $mockProduct = factory(Product::class)->create([
-            'user_id' => $this->mockMerchant->id,
-            'name' => 'Tas Pakkat',
-            'price' => '50000',
-            'images' => 'image.jpeg',
-            'category' => 'buatan tangan',
-            'stock' => 2,
-            'sold' => 0,
-            'description' => 'Bahan dasar dari rotan dan bambu',
-            'specification' => '{"size":"Sedang","weight":"1"}',
-            'color' => 'Hitam',
-            'cat_product' => 'aksesoris',
-            'asal' => 'Toba Samosir',
-        ]);
-
-        // store a new order in database
-        factory(Order::class)->create([
-            'product_id' => $mockProduct->id,
-            'transaction_id' => $mockTransaction->id,
-            'quantity' => 1,
-        ]);
-
-        // define parameters
-        $paramTransactionId = $mockTransaction->id;
-        $paramRequest = new Request();
-        $paramRequest->replace(['status' => 'rejectedByAdmin']);
-
-        // define expected result
-        $expectedResult = array(
-            'updated_transaction' => 1,
-            'updated_product' => 0,
-        );
-
-        $result = (new TransactionController())->updateStatusMutant2($paramRequest, $paramTransactionId);
-        $this->assertEquals($expectedResult, $result);
+        // call function and assert value
+        $updateCount = (new TransactionController())->updateStatusMutant2($paramRequest, $paramTransactionId);
+        $this->assertEquals($expectedResult, $updateCount);
     }
 }
