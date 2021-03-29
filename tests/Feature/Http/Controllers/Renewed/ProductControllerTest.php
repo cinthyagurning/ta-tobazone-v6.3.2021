@@ -38,11 +38,13 @@ class ProductControllerTest extends TestCase
      */
     public function testStore($testData, $expectedResult)
     {
-        // define mock data
-        // mock merchant
-        $mockMerchant = factory(User::class)->create($testData['merchant']);
-        // login as merchant
-        $this->actingAs($mockMerchant);
+        if ($testData['merchant'] != null) {
+            // define mock data
+            // mock merchant
+            $mockMerchant = factory(User::class)->create($testData['merchant']);
+            // login as merchant
+            $this->actingAs($mockMerchant);
+        }
 
         // define parameters
         $paramRequest = new Request();
@@ -52,6 +54,8 @@ class ProductControllerTest extends TestCase
         // call function
         $storedProduct = (new ProductController())->store($paramRequest, $paramId);
         if (!$expectedResult['is_error']) {
+            $this->assertNotEmpty($storedProduct);
+
             // define expected result
             $expectedProduct = new Product($expectedResult['product']);
             $expectedProduct->user_id = $mockMerchant->id;

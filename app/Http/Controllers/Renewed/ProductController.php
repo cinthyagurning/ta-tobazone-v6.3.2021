@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Renewed;
 
 use App\Http\Controllers\Controller;
 use App\Product;
-use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -21,8 +20,7 @@ class ProductController extends Controller
             'description' => 'required',
             'product_origin' => 'required',
             'dimention' => 'required',
-            'weight' => 'required|numeric|min:1',
-            'color' => 'required',
+            'weight' => 'required|numeric|min:1'
         ];
 
         $messages = [
@@ -36,22 +34,21 @@ class ProductController extends Controller
 
     public function store(Request $request, $id)
     {
+        // authorize user
+        if (!Auth::check()) {
+            // user not authorized
+            return null;
+        }
+
         // validate input request
         $validator = $this->createProductValidator($request);
         if ($validator->fails()) {
-            // $error = $validator->errors();
-
-            // return $error;
+            // $validator->fails() returns false, then data are valid
+            // $validator->fails() returns true, then data are not valid
             return null;
         }
 
         $product = new Product();
-        // authorize user
-        if (!Auth::check()) {
-            // return new Error("Not authorized.");
-            return null;
-        }
-        $product->user_id = Auth::user()->id;
         $product->color = $request->color;
 
         if ($id == 1) {
@@ -100,6 +97,7 @@ class ProductController extends Controller
             $product->category = "-";
         }
 
+        $product->user_id = Auth::user()->id;
         $product->name = $request->name;
         $product->price = $request->price;
         $product->stock = $request->stock;
@@ -107,8 +105,10 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->images = json_encode($request->images);
         $product->asal = $request->product_origin;
-        if (!$product->save()) {
-            // return new Error("Unable to store new product.");
+
+        try {
+            $product->save();
+        } catch (\Exception $e) {
             return null;
         }
 
