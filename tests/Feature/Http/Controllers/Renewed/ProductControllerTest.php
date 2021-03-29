@@ -54,6 +54,8 @@ class ProductControllerTest extends TestCase
         // call function
         $storedProduct = (new ProductController())->store($paramRequest, $paramId);
         if (!$expectedResult['is_error']) {
+            $this->assertNotEmpty($storedProduct);
+
             // define expected result
             $expectedProduct = new Product($expectedResult['product']);
             $expectedProduct->user_id = $mockMerchant->id;
