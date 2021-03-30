@@ -33,10 +33,11 @@ class ProductController extends Controller
         return Validator::make($request->all(), $rules, $messages);
     }
 
-    public function storeMutant1(Request $request, $id)
+    // mutant 1
+    public function mutantStore1(Request $request, $id)
     {
         // authorize user
-        // mutant 1: remove ! symbol
+        // fault 1: remove ! symbol
         if (Auth::check()) {
             // user not authorized
             return null;
@@ -93,8 +94,6 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
@@ -118,7 +117,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant2(Request $request, $id)
+    // mutant 2
+    public function mutantStore2(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -128,7 +128,7 @@ class ProductController extends Controller
 
         // validate input request
         $validator = $this->createProductValidator($request);
-        // mutant 2: add ! symbol
+        // fault 2: add ! symbol
         if (!$validator->fails()) {
             // $validator->fails() returns false, then data are valid
             // but $validator->fails() returns true, then data are not valid
@@ -178,8 +178,6 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
@@ -203,7 +201,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant3(Request $request, $id)
+    // mutant 3
+    public function mutantStore3(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -223,7 +222,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->color = $request->color;
 
-        // mutant 3: '==' change to '!='
+        // fault 3: '==' change to '!='
         if ($id != 1) {
             $product->cat_product = "ulos";
             $product->specification = json_encode([
@@ -263,13 +262,10 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
         }
-
 
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;
@@ -289,7 +285,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant4(Request $request, $id)
+    // mutant 4
+    public function mutantStore4(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -316,7 +313,7 @@ class ProductController extends Controller
                 'weight' => $request->weight
             ]);
             $product->category = $request->category;
-            // mutant 4: '==' change to '!='
+            // fault 4: '==' change to '!='
         } else if ($id != 2) {
             $product->cat_product = "pakaian";
             $product->specification = json_encode([
@@ -349,13 +346,10 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
         }
-
 
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;
@@ -375,7 +369,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant5(Request $request, $id)
+    // mutant 5
+    public function mutantStore5(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -409,7 +404,7 @@ class ProductController extends Controller
                 'weight' => $request->weight
             ]);
             $product->category = $request->category;
-            // mutant 5: '==' change to '!='
+            // fault 5: '==' change to '!='
         } else if ($id != 3) {
             $product->cat_product = "makanan";
             $product->specification = json_encode([
@@ -435,13 +430,10 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
         }
-
 
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;
@@ -461,7 +453,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant6(Request $request, $id)
+    // mutant 6
+    public function mutantStore6(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -504,7 +497,7 @@ class ProductController extends Controller
             ]);
             $product->color = "-";
             $product->category = $request->category;
-            // mutant 6: '==' change to '!='
+            // fault 6: '==' change to '!='
         } else if ($id != 4) {
             $product->cat_product = "aksesoris";
             $product->specification = json_encode([
@@ -521,13 +514,10 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
         }
-
 
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;
@@ -547,7 +537,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant7(Request $request, $id)
+    // mutant 7
+    public function mutantStore7(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -597,7 +588,7 @@ class ProductController extends Controller
                 'weight' => $request->weight
             ]);
             $product->category = $request->category;
-            // mutant 7: '==' change to '!='
+            // fault 7: '==' change to '!='
         } else if ($id != 5) {
             $product->cat_product = "obat";
             $product->specification = json_encode([
@@ -607,13 +598,10 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
         }
-
 
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;
@@ -633,7 +621,8 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function storeMutant8(Request $request, $id)
+    // mutant 8
+    public function mutantStore8(Request $request, $id)
     {
         // authorize user
         if (!Auth::check()) {
@@ -690,102 +679,13 @@ class ProductController extends Controller
                 'weight' => $request->weight
             ]);
 
-            // mutant 8: '==' change to '!='
+            // fault 8: '==' change to '!='
             if ($request->dimention != "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
         }
-
-
-        $product->user_id = Auth::user()->id;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->sold = 0;
-        $product->description = $request->description;
-        $product->images = json_encode($request->images);
-        $product->asal = $request->product_origin;
-
-        try {
-            $product->save();
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        return $product;
-    }
-
-    public function storeMutant9(Request $request, $id)
-    {
-        // authorize user
-        if (!Auth::check()) {
-            // user not authorized
-            return null;
-        }
-
-        // validate input request
-        $validator = $this->createProductValidator($request);
-        if ($validator->fails()) {
-            // $validator->fails() returns false, then data are valid
-            // but $validator->fails() returns true, then data are not valid
-            // this block code will executed only if condition is `true`
-            return null;
-        }
-
-        $product = new Product();
-        $product->color = $request->color;
-
-        if ($id == 1) {
-            $product->cat_product = "ulos";
-            $product->specification = json_encode([
-                'dimention' => $request->dimention,
-                'weight' => $request->weight
-            ]);
-            $product->category = $request->category;
-        } else if ($id == 2) {
-            $product->cat_product = "pakaian";
-            $product->specification = json_encode([
-                'size' => $request->dimention,
-                'weight' => $request->weight
-            ]);
-            $product->category = $request->category;
-        } else if ($id == 3) {
-            $product->cat_product = "makanan";
-            $product->specification = json_encode([
-                'size_pack' => $request->dimention,
-                'weight' => $request->weight,
-                'umur_simpan' => $request->color
-            ]);
-            $product->color = "-";
-            $product->category = $request->category;
-        } else if ($id == 4) {
-            $product->cat_product = "aksesoris";
-            $product->specification = json_encode([
-                'size' => $request->dimention,
-                'weight' => $request->weight
-            ]);
-            $product->category = $request->category;
-        } else if ($id == 5) {
-            $product->cat_product = "obat";
-            $product->specification = json_encode([
-                'jenis' => $request->dimention,
-                'weight' => $request->weight
-            ]);
-
-            if ($request->dimention == "Padat") {
-                $product->color = $request->color_1;
-                // mutant 9: '==' change to '!='
-            } else if ($request->dimention != "Cair") {
-                $product->color = $request->color;
-            }
-
-            $product->category = "-";
-        }
-
 
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;

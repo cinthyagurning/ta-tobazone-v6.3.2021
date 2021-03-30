@@ -90,8 +90,6 @@ class ProductController extends Controller
 
             if ($request->dimention == "Padat") {
                 $product->color = $request->color_1;
-            } else if ($request->dimention == "Cair") {
-                $product->color = $request->color;
             }
 
             $product->category = "-";
