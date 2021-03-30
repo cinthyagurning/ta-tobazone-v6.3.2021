@@ -848,5 +848,205 @@
                 "cat_product": "obat"
             }
         }
+    },
+    {
+        "test_name": "tc26_success_store_valid_product_obat_with_dimention_padat",
+        "test_data": {
+            "merchant": {
+                "username": "merchant"
+            },
+            "request": {
+                "product": {
+                    "name": "Minyak Karo12!",
+                    "price": 25000,
+                    "images": ["minyak-param.jpeg"],
+                    "stock": 20,
+                    "description": "Berkhasiat Ampuh!",
+                    "product_origin": "Toba Samosir",
+                    "dimention": "Padat",
+                    "weight": 100,
+                    "color": "100",
+                    "color_1": "",
+                    "category": ""
+                },
+                "id_product_type": 5
+            }
+        },
+        "test_expected_result": {
+            "is_error": false,
+            "product": {
+                "name": "Minyak Karo12!",
+                "price": 25000,
+                "images": "[\"minyak-param.jpeg\"]",
+                "stock": 20,
+                "description": "Berkhasiat Ampuh!",
+                "specification": "{\"jenis\":\"Padat\",\"weight\":100}",
+                "asal": "Toba Samosir",
+                "color": "100",
+                "category": "-",
+                "sold": 0,
+                "cat_product": "obat"
+            }
+        }
+    },
+    {
+        "test_name": "tc27_success_store_valid_product_obat_with_dimention_padat_with_name_uppercases",
+        "test_data": {
+            "merchant": {
+                "username": "merchant"
+            },
+            "request": {
+                "product": {
+                    "name": "Panadol_Oke",
+                    "price": 25000,
+                    "images": ["panadol.jpeg"],
+                    "stock": 20,
+                    "description": "Berkhasiat Ampuh!",
+                    "product_origin": "Toba Samosir",
+                    "dimention": "Padat",
+                    "weight": 100,
+                    "color": "100",
+                    "color_1": "",
+                    "category": ""
+                },
+                "id_product_type": 5
+            }
+        },
+        "test_expected_result": {
+            "is_error": false,
+            "product": {
+                "name": "Panadol_Oke",
+                "price": 25000,
+                "images": "[\"panadol.jpeg\"]",
+                "stock": 20,
+                "description": "Berkhasiat Ampuh!",
+                "specification": "{\"jenis\":\"Padat\",\"weight\":100}",
+                "asal": "Toba Samosir",
+                "color": "100",
+                "category": "-",
+                "sold": 0,
+                "cat_product": "obat"
+            }
+        }
+    },
+    {
+        "test_name": "tc28_success_store_valid_product_obat_with_dimention_padat_with_name_numeric",
+        "test_data": {
+            "merchant": {
+                "username": "merchant"
+            },
+            "request": {
+                "product": {
+                    "name": "1234567890",
+                    "price": 25000,
+                    "images": ["panadol.jpeg"],
+                    "stock": 20,
+                    "description": "Berkhasiat Ampuh!",
+                    "product_origin": "Toba Samosir",
+                    "dimention": "Padat",
+                    "weight": 100,
+                    "color": "100",
+                    "color_1": "",
+                    "category": ""
+                },
+                "id_product_type": 5
+            }
+        },
+        "test_expected_result": {
+            "is_error": false,
+            "product": {
+                "name": "1234567890",
+                "price": 25000,
+                "images": "[\"panadol.jpeg\"]",
+                "stock": 20,
+                "description": "Berkhasiat Ampuh!",
+                "specification": "{\"jenis\":\"Padat\",\"weight\":100}",
+                "asal": "Toba Samosir",
+                "color": "100",
+                "category": "-",
+                "sold": 0,
+                "cat_product": "obat"
+            }
+        }
+    },
+    {
+        "test_name": "tc29_success_store_valid_product_obat_with_dimention_padat_with_name_symbol",
+        "test_data": {
+            "merchant": {
+                "username": "merchant"
+            },
+            "request": {
+                "product": {
+                    "name": "!@#$%^&",
+                    "price": 25000,
+                    "images": ["panadol.jpeg"],
+                    "stock": 20,
+                    "description": "Berkhasiat Ampuh!",
+                    "product_origin": "Toba Samosir",
+                    "dimention": "Padat",
+                    "weight": 100,
+                    "color": "100",
+                    "color_1": "",
+                    "category": ""
+                },
+                "id_product_type": 5
+            }
+        },
+        "test_expected_result": {
+            "is_error": false,
+            "product": {
+                "name": "!@#$%^&",
+                "price": 25000,
+                "images": "[\"panadol.jpeg\"]",
+                "stock": 20,
+                "description": "Berkhasiat Ampuh!",
+                "specification": "{\"jenis\":\"Padat\",\"weight\":100}",
+                "asal": "Toba Samosir",
+                "color": "100",
+                "category": "-",
+                "sold": 0,
+                "cat_product": "obat"
+            }
+        }
+    },
+    {
+        "test_name": "tc30_success_store_valid_product_obat_with_dimention_padat_with_name_symbol",
+        "test_data": {
+            "merchant": {
+                "username": "merchant"
+            },
+            "request": {
+                "product": {
+                    "name": "paramex",
+                    "price": 25000,
+                    "images": ["paramex.jpeg"],
+                    "stock": 20,
+                    "description": "Berkhasiat Ampuh menghilangkan sakit kepala!",
+                    "product_origin": "1234567890",
+                    "dimention": "Padat",
+                    "weight": 100,
+                    "color": "100",
+                    "color_1": "",
+                    "category": ""
+                },
+                "id_product_type": 5
+            }
+        },
+        "test_expected_result": {
+            "is_error": false,
+            "product": {
+                "name": "!paramex",
+                "price": 25000,
+                "images": "[\"paramex.jpeg\"]",
+                "stock": 20,
+                "description": "Berkhasiat Ampuh menghilangkan sakit kepala!",
+                "specification": "{\"jenis\":\"Padat\",\"weight\":100}",
+                "asal": "1234567890",
+                "color": "100",
+                "category": "-",
+                "sold": 0,
+                "cat_product": "obat"
+            }
+        }
     }
 ]
